@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/src/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NUI React Boilerplate</title>
+    <script type="module" crossorigin src="./assets/index-Biz8qect.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-SonfJNby.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <style id="custom-notify-style"></style>
+    <style id="atlas-notify-style">
+      /* Atlas UI design system override for ox_lib notifications.
+         Targets the react-hot-toast container and the Mantine card rendered
+         by ox_lib's notify handler so notifications match atlas_loot,
+         atlas_adminmenu, atlas_crafting, etc. */
+
+      :root {
+        --atlas-bg-primary: #0f0f0f;
+        --atlas-bg-secondary: #1a1a1a;
+        --atlas-bg-tertiary: #242424;
+        --atlas-border: #333333;
+        --atlas-text-primary: #ffffff;
+        --atlas-text-secondary: #a0a0a0;
+        --atlas-text-muted: #666666;
+        --atlas-accent: #6366f1;
+        --atlas-success: #22c55e;
+        --atlas-warning: #f59e0b;
+        --atlas-danger: #ef4444;
+      }
+
+      /* react-hot-toast wraps each toast in a transparent positioning div.
+         Keep that wrapper invisible so only the inner Mantine card shows. */
+      #_rht_toaster > div > div {
+        background: transparent !important;
+        box-shadow: none !important;
+        border: 0 !important;
+        padding: 0 !important;
+        color: var(--atlas-text-primary) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        backdrop-filter: none !important;
+      }
+
+      /* The actual ox_lib notification card (Mantine Box from notify handler). */
+      #_rht_toaster > div > div > div {
+        background: var(--atlas-bg-secondary) !important;
+        color: var(--atlas-text-primary) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        border: 1px solid #4a4a4a !important;
+        border-radius: 10px !important;
+        box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.5) !important;
+        padding: 14px 16px !important;
+        backdrop-filter: none !important;
+      }
+
+      /* Title text */
+      #_rht_toaster .mantine-Text-root,
+      #_rht_toaster h1,
+      #_rht_toaster h2,
+      #_rht_toaster h3,
+      #_rht_toaster h4,
+      #_rht_toaster h5,
+      #_rht_toaster h6 {
+        color: var(--atlas-text-primary) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        line-height: 1.35 !important;
+        letter-spacing: 0 !important;
+        margin: 0 !important;
+      }
+
+      /* Description text (with or without title) */
+      #_rht_toaster .description,
+      #_rht_toaster .description * {
+        color: var(--atlas-text-secondary) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 400 !important;
+        line-height: 1.45 !important;
+        letter-spacing: 0 !important;
+      }
+
+      /* When there is no title, the description acts as the primary line.
+         ox_lib applies the `.description` class for both cases, but adds extra
+         spacing only when a title is present, so this rule keeps standalone
+         descriptions readable. */
+      #_rht_toaster .description {
+        margin: 0 !important;
+      }
+
+      /* Mantine Stack/Group spacing inside the toast */
+      #_rht_toaster .mantine-Group-root {
+        gap: 12px !important;
+      }
+      #_rht_toaster .mantine-Stack-root {
+        gap: 2px !important;
+      }
+
+      /* Icon ThemeIcon backing — soften the default light variant so it
+         blends into the Atlas dark surface */
+      #_rht_toaster .mantine-ThemeIcon-root {
+        background-color: rgba(99, 102, 241, 0.12) !important;
+        border: 1px solid rgba(99, 102, 241, 0.25) !important;
+      }
+
+      /* Per-type icon backgrounds — match Atlas status tint pattern */
+      #_rht_toaster .mantine-ThemeIcon-root[style*="rgb(64, 192, 87)"],
+      #_rht_toaster .mantine-ThemeIcon-root[style*="rgb(18, 184, 134)"],
+      #_rht_toaster .mantine-ThemeIcon-root[style*="rgb(34, 197, 94)"] {
+        background-color: rgba(34, 197, 94, 0.15) !important;
+        border-color: rgba(34, 197, 94, 0.3) !important;
+      }
+      #_rht_toaster .mantine-ThemeIcon-root[style*="rgb(250, 176, 5)"],
+      #_rht_toaster .mantine-ThemeIcon-root[style*="rgb(245, 158, 11)"] {
+        background-color: rgba(245, 158, 11, 0.15) !important;
+        border-color: rgba(245, 158, 11, 0.3) !important;
+      }
+      #_rht_toaster .mantine-ThemeIcon-root[style*="rgb(250, 82, 82)"],
+      #_rht_toaster .mantine-ThemeIcon-root[style*="rgb(239, 68, 68)"] {
+        background-color: rgba(239, 68, 68, 0.15) !important;
+        border-color: rgba(239, 68, 68, 0.3) !important;
+      }
+
+      /* Ring progress (duration indicator) — make track subtle */
+      #_rht_toaster .mantine-RingProgress-root svg > circle:first-of-type {
+        stroke: rgba(255, 255, 255, 0.06) !important;
+      }
+    </style>
+    <style id="atlas-textui-style">
+      /* Atlas UI override for ox_lib TextUI (lib.showTextUI).
+         The container is identified at runtime via MutationObserver — see
+         the script block below — and tagged with `.atlas-ox-textui`. */
+      .atlas-ox-textui {
+        background: #1a1a1a !important;
+        color: #ffffff !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        letter-spacing: 0 !important;
+        padding: 10px 14px !important;
+        margin: 12px !important;
+        border: 1px solid #333333 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.5) !important;
+        backdrop-filter: none !important;
+      }
+
+      .atlas-ox-textui * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        color: #ffffff !important;
+      }
+
+      /* Color the FontAwesome icon (if present) with the Atlas accent —
+         unless the user passed an explicit `iconColor` to lib.showTextUI. */
+      .atlas-ox-textui svg[data-icon]:not([style*="color"]),
+      .atlas-ox-textui svg[data-prefix]:not([style*="color"]) {
+        color: #6366f1 !important;
+      }
+
+      .atlas-ox-textui p {
+        margin: 0 !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+      }
+
+      /* Icon spacing inside the Mantine Group */
+      .atlas-ox-textui .mantine-Group-root {
+        gap: 10px !important;
+      }
+    </style>
+    <style id="atlas-widgets-style">
+      /* ============================================================
+         Atlas UI overrides for the remaining ox_lib widgets:
+           - lib.alertDialog        → Mantine Modal
+           - lib.inputDialog        → Mantine Modal + form fields
+           - lib.registerMenu       → custom container (.atlas-ox-menu)
+           - lib.registerRadial     → SVG (.atlas-ox-radial)
+           - lib.progressBar/Circle → custom (.atlas-ox-progress)
+           - lib.skillCheck         → SVG (.atlas-ox-skillcheck)
+         The custom (non-Mantine) widgets are tagged at runtime by the
+         MutationObserver in the script block below.
+         ============================================================ */
+
+      /* ----- Modal (Alert Dialog + Input Dialog) ----- */
+      .mantine-Modal-modal,
+      .mantine-Modal-content {
+        background: var(--atlas-bg-primary, #0f0f0f) !important;
+        border: 1px solid var(--atlas-border, #333333) !important;
+        border-radius: 12px !important;
+        color: var(--atlas-text-primary, #ffffff) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
+        backdrop-filter: none !important;
+      }
+
+      .mantine-Modal-header {
+        background: var(--atlas-bg-secondary, #1a1a1a) !important;
+        border-bottom: 1px solid var(--atlas-border, #333333) !important;
+        padding: 14px 20px !important;
+        margin: 0 !important;
+      }
+
+      .mantine-Modal-title {
+        color: var(--atlas-text-primary, #ffffff) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        line-height: 1.35 !important;
+      }
+
+      .mantine-Modal-body {
+        padding: 18px 20px !important;
+        color: var(--atlas-text-secondary, #a0a0a0) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        line-height: 1.5 !important;
+      }
+
+      .mantine-Modal-overlay {
+        background: rgba(0, 0, 0, 0.65) !important;
+        backdrop-filter: none !important;
+      }
+
+      .mantine-Modal-close {
+        color: var(--atlas-text-secondary, #a0a0a0) !important;
+        background: transparent !important;
+      }
+      .mantine-Modal-close:hover {
+        background: var(--atlas-danger, #ef4444) !important;
+        color: #ffffff !important;
+      }
+
+      /* ----- Form fields inside dialogs ----- */
+      .mantine-TextInput-input,
+      .mantine-PasswordInput-input,
+      .mantine-NumberInput-input,
+      .mantine-Textarea-input,
+      .mantine-Select-input,
+      .mantine-MultiSelect-input,
+      .mantine-DatePicker-input,
+      .mantine-TimeInput-input,
+      .mantine-ColorInput-input {
+        background: var(--atlas-bg-secondary, #1a1a1a) !important;
+        border: 1px solid var(--atlas-border, #333333) !important;
+        color: var(--atlas-text-primary, #ffffff) !important;
+        border-radius: 8px !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+      }
+
+      .mantine-TextInput-input:focus,
+      .mantine-PasswordInput-input:focus,
+      .mantine-NumberInput-input:focus,
+      .mantine-Textarea-input:focus,
+      .mantine-Select-input:focus,
+      .mantine-MultiSelect-input:focus,
+      .mantine-DatePicker-input:focus,
+      .mantine-TimeInput-input:focus,
+      .mantine-ColorInput-input:focus {
+        border-color: var(--atlas-accent, #6366f1) !important;
+      }
+
+      .mantine-InputWrapper-label,
+      .mantine-Checkbox-label,
+      .mantine-Radio-label,
+      .mantine-Switch-label {
+        color: var(--atlas-text-primary, #ffffff) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+      }
+
+      .mantine-InputWrapper-description,
+      .mantine-Text-root[class*="description"] {
+        color: var(--atlas-text-secondary, #a0a0a0) !important;
+        font-size: 12px !important;
+      }
+
+      /* ----- Buttons ----- */
+      .mantine-Button-root {
+        border-radius: 8px !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        letter-spacing: 0 !important;
+        text-transform: none !important;
+      }
+      .mantine-Button-default {
+        background: var(--atlas-bg-tertiary, #242424) !important;
+        border: 1px solid var(--atlas-border, #333333) !important;
+        color: var(--atlas-text-primary, #ffffff) !important;
+      }
+      .mantine-Button-default:hover {
+        background: #2a2a2a !important;
+      }
+      .mantine-Button-light,
+      .mantine-Button-filled {
+        background: var(--atlas-accent, #6366f1) !important;
+        color: #ffffff !important;
+        border: 0 !important;
+      }
+      .mantine-Button-light:hover,
+      .mantine-Button-filled:hover {
+        background: #5457e5 !important;
+      }
+
+      /* ----- Checkbox / Radio / Switch accent ----- */
+      .mantine-Checkbox-input:checked,
+      .mantine-Radio-radio:checked {
+        background-color: var(--atlas-accent, #6366f1) !important;
+        border-color: var(--atlas-accent, #6366f1) !important;
+      }
+      .mantine-Switch-input:checked + .mantine-Switch-track {
+        background-color: var(--atlas-accent, #6366f1) !important;
+        border-color: var(--atlas-accent, #6366f1) !important;
+      }
+
+      /* ----- Slider ----- */
+      .mantine-Slider-bar { background-color: var(--atlas-accent, #6366f1) !important; }
+      .mantine-Slider-thumb {
+        background-color: var(--atlas-accent, #6366f1) !important;
+        border-color: var(--atlas-accent, #6366f1) !important;
+      }
+      .mantine-Slider-track::before { background-color: var(--atlas-bg-tertiary, #242424) !important; }
+
+      /* ----- Select / Multiselect dropdowns ----- */
+      .mantine-Select-dropdown,
+      .mantine-MultiSelect-dropdown,
+      .mantine-Autocomplete-dropdown {
+        background: var(--atlas-bg-secondary, #1a1a1a) !important;
+        border: 1px solid var(--atlas-border, #333333) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+      }
+      .mantine-Select-item[data-hovered],
+      .mantine-MultiSelect-item[data-hovered] {
+        background: var(--atlas-bg-tertiary, #242424) !important;
+      }
+      .mantine-Select-item[data-selected],
+      .mantine-MultiSelect-item[data-selected] {
+        background: var(--atlas-accent, #6366f1) !important;
+        color: #ffffff !important;
+      }
+
+      /* ============================================================
+         List Menu (lib.registerMenu)
+         Tagged at runtime as `.atlas-ox-menu` (the outer container).
+         ============================================================ */
+      .atlas-ox-menu {
+        background: var(--atlas-bg-primary, #0f0f0f) !important;
+        border: 1px solid var(--atlas-border, #333333) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.55) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        color: var(--atlas-text-primary, #ffffff) !important;
+        overflow: hidden !important;
+        backdrop-filter: none !important;
+      }
+      .atlas-ox-menu * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+      }
+      /* Menu title bar (first child group) */
+      .atlas-ox-menu > div:first-child {
+        background: var(--atlas-bg-secondary, #1a1a1a) !important;
+        border-bottom: 1px solid var(--atlas-border, #333333) !important;
+        padding: 12px 16px !important;
+        font-weight: 600 !important;
+        font-size: 14px !important;
+        color: var(--atlas-text-primary, #ffffff) !important;
+      }
+      /* Menu items */
+      .atlas-ox-menu button {
+        background: var(--atlas-bg-secondary, #1a1a1a) !important;
+        border: 1px solid var(--atlas-border, #333333) !important;
+        border-radius: 8px !important;
+        color: var(--atlas-text-primary, #ffffff) !important;
+        padding: 10px 12px !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        transition: background 150ms ease, border-color 150ms ease !important;
+      }
+      .atlas-ox-menu button:hover,
+      .atlas-ox-menu button:focus {
+        background: var(--atlas-bg-tertiary, #242424) !important;
+        border-color: var(--atlas-accent, #6366f1) !important;
+        outline: none !important;
+      }
+
+      /* ============================================================
+         Radial Menu (lib.registerRadial)
+         Tagged as `.atlas-ox-radial` on the SVG (viewBox 0 0 350 350).
+         ============================================================ */
+      .atlas-ox-radial .atlas-ox-radial-bg {
+        fill: var(--atlas-bg-primary, #0f0f0f) !important;
+        fill-opacity: 0.85 !important;
+        stroke: var(--atlas-border, #333333) !important;
+        stroke-width: 1 !important;
+      }
+      .atlas-ox-radial .atlas-ox-radial-sector {
+        fill: var(--atlas-bg-secondary, #1a1a1a) !important;
+        stroke: var(--atlas-border, #333333) !important;
+        stroke-width: 1 !important;
+        transition: fill 150ms ease !important;
+      }
+      .atlas-ox-radial .atlas-ox-radial-sector:hover {
+        fill: var(--atlas-accent, #6366f1) !important;
+        cursor: pointer !important;
+      }
+      .atlas-ox-radial .atlas-ox-radial-sector text,
+      .atlas-ox-radial .atlas-ox-radial-sector svg path {
+        fill: var(--atlas-text-primary, #ffffff) !important;
+      }
+      .atlas-ox-radial .atlas-ox-radial-center {
+        fill: var(--atlas-accent, #6366f1) !important;
+        stroke: var(--atlas-bg-primary, #0f0f0f) !important;
+        stroke-width: 4 !important;
+      }
+      .atlas-ox-radial .atlas-ox-radial-center:hover {
+        fill: #5457e5 !important;
+      }
+
+      /* ============================================================
+         Progress bar (lib.progressBar)
+         Tagged as `.atlas-ox-progress` on the bar's container.
+         ============================================================ */
+      .atlas-ox-progress-container {
+        background: var(--atlas-bg-secondary, #1a1a1a) !important;
+        border: 1px solid var(--atlas-border, #333333) !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+        backdrop-filter: none !important;
+      }
+      .atlas-ox-progress {
+        background: var(--atlas-accent, #6366f1) !important;
+      }
+      .atlas-ox-progress-label {
+        color: var(--atlas-text-primary, #ffffff) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6) !important;
+      }
+
+      /* Progress circle (lib.progressCircle) — Mantine RingProgress outside the toaster */
+      :not(#_rht_toaster) > * .mantine-RingProgress-root svg > circle:first-of-type {
+        stroke: rgba(255, 255, 255, 0.06) !important;
+      }
+      :not(#_rht_toaster) > * .mantine-RingProgress-root svg > circle:nth-of-type(2) {
+        stroke: var(--atlas-accent, #6366f1) !important;
+      }
+
+      /* ============================================================
+         Skill check (lib.skillCheck)
+         Tagged as `.atlas-ox-skillcheck` on the SVG.
+         ============================================================ */
+      .atlas-ox-skillcheck circle[stroke-width="8"]:first-of-type,
+      .atlas-ox-skillcheck circle[stroke-width="10"]:first-of-type {
+        stroke: var(--atlas-bg-tertiary, #242424) !important;
+      }
+      .atlas-ox-skillcheck circle[stroke-width="8"]:nth-of-type(2),
+      .atlas-ox-skillcheck circle[stroke-width="10"]:nth-of-type(2) {
+        stroke: var(--atlas-accent, #6366f1) !important;
+      }
+      .atlas-ox-skillcheck circle[stroke-width="16"],
+      .atlas-ox-skillcheck circle[stroke-width="18"] {
+        stroke: var(--atlas-text-primary, #ffffff) !important;
+      }
+      /* The key indicator (single-letter prompt) shown in the centre */
+      .atlas-ox-skillcheck-key {
+        background: var(--atlas-bg-secondary, #1a1a1a) !important;
+        border: 1px solid var(--atlas-accent, #6366f1) !important;
+        border-radius: 8px !important;
+        color: var(--atlas-text-primary, #ffffff) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-weight: 600 !important;
+      }
+    </style>
+    <style id="atlas-context-style">
+      .atlas-ox-context-menu {
+        background: transparent !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+      }
+
+      .atlas-ox-context-menu > div {
+        overflow: visible !important;
+      }
+
+      .atlas-ox-context-menu > div > div:first-child {
+        background: transparent !important;
+        border-bottom: 0 !important;
+        padding: 0 0 8px !important;
+      }
+
+      .atlas-ox-context-menu > div > div:last-child {
+        background: transparent !important;
+        padding: 0 !important;
+      }
+
+      .atlas-ox-image-fallback {
+        width: 25px;
+        height: 25px;
+        flex: 0 0 25px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #6366f1;
+      }
+
+      .atlas-ox-image-fallback svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+      }
+    </style>
+    <script>
+      (function() {
+        const contextClass = 'atlas-ox-context-menu';
+        const fallbackClass = 'atlas-ox-image-fallback';
+        const textUiClass = 'atlas-ox-textui';
+        const menuClass = 'atlas-ox-menu';
+        const radialClass = 'atlas-ox-radial';
+        const radialBgClass = 'atlas-ox-radial-bg';
+        const radialSectorClass = 'atlas-ox-radial-sector';
+        const radialCenterClass = 'atlas-ox-radial-center';
+        const skillCheckClass = 'atlas-ox-skillcheck';
+        const skillCheckKeyClass = 'atlas-ox-skillcheck-key';
+        const progressClass = 'atlas-ox-progress';
+        const progressContainerClass = 'atlas-ox-progress-container';
+        const progressLabelClass = 'atlas-ox-progress-label';
+
+        function markContextMenus() {
+          const root = document.getElementById('root');
+          if (!root) return;
+
+          root.querySelectorAll('div').forEach((element) => {
+            const styles = window.getComputedStyle(element);
+            if (
+              styles.position === 'absolute' &&
+              styles.width === '360px' &&
+              styles.maxHeight !== 'none' &&
+              styles.backgroundColor === 'rgb(15, 15, 15)' &&
+              styles.overflow === 'hidden'
+            ) {
+              element.classList.add(contextClass);
+            }
+
+            // ox_lib TextUI container is the only Box that uses the Roboto
+            // font set inline by Mantine's createStyles. The default Mantine
+            // dark[6] palette resolves to rgb(37, 38, 43). Tag it so the
+            // Atlas override CSS can re-skin it.
+            if (
+              !element.classList.contains(textUiClass) &&
+              styles.fontFamily &&
+              styles.fontFamily.toLowerCase().indexOf('roboto') !== -1 &&
+              (styles.backgroundColor === 'rgb(37, 38, 43)' ||
+                styles.backgroundColor === 'rgb(25, 25, 25)' ||
+                styles.backgroundColor === 'rgb(26, 27, 30)')
+            ) {
+              element.classList.add(textUiClass);
+            }
+          });
+
+          // Tag the list menu container (lib.registerMenu).
+          // It is a fixed-position container with a children list of
+          // buttons/labels and uses Mantine ScrollArea internally.
+          root.querySelectorAll('div').forEach((element) => {
+            if (element.classList.contains(menuClass)) return;
+            const styles = window.getComputedStyle(element);
+            if (
+              styles.position === 'absolute' &&
+              (styles.width === '384px' || styles.width === '320px' || styles.width === '350px') &&
+              element.querySelector('button') &&
+              element.querySelector('.mantine-ScrollArea-root, [class*="ScrollArea"]')
+            ) {
+              element.classList.add(menuClass);
+            }
+          });
+
+          // Tag the radial menu SVG by its unique viewBox.
+          root.querySelectorAll('svg[viewBox="0 0 350 350"]').forEach((svg) => {
+            if (svg.classList.contains(radialClass)) return;
+            svg.classList.add(radialClass);
+            // Background circle: r="175" without a transform sibling
+            svg.querySelectorAll('circle').forEach((c) => {
+              const r = c.getAttribute('r');
+              if (r === '175') c.classList.add(radialBgClass);
+              else if (r === '28' || r === '32') c.classList.add(radialCenterClass);
+            });
+            // Sectors: <g> wrapping a <path d="M175.01,..."> — these are the
+            // wedge buttons.
+            svg.querySelectorAll('g').forEach((g) => {
+              const path = g.querySelector('path');
+              if (path && (path.getAttribute('d') || '').indexOf('M175.01,175.01') === 0) {
+                g.classList.add(radialSectorClass);
+              }
+            });
+          });
+
+          // Tag the skill-check SVG. It has width/height = 500 and contains
+          // 3+ <circle> elements with r="50" (or r="65" on tall displays).
+          root.querySelectorAll('svg').forEach((svg) => {
+            if (svg.classList.contains(skillCheckClass)) return;
+            const w = svg.getAttribute('width') || svg.style.width;
+            const circles = svg.querySelectorAll('circle');
+            if (circles.length >= 3 && (w === '500' || svg.getAttribute('r') === '50')) {
+              const first = circles[0];
+              const r = first.getAttribute('r');
+              if (r === '50' || r === '65') {
+                svg.classList.add(skillCheckClass);
+              }
+            }
+          });
+
+          // Tag the skill-check key prompt button (sibling of the SVG).
+          root.querySelectorAll('.' + skillCheckClass).forEach((svg) => {
+            const parent = svg.parentElement;
+            if (!parent) return;
+            parent.querySelectorAll('div').forEach((el) => {
+              if (el.classList.contains(skillCheckKeyClass)) return;
+              const txt = (el.textContent || '').trim();
+              if (txt.length === 1 && /^[A-Z0-9]$/.test(txt)) {
+                el.classList.add(skillCheckKeyClass);
+              }
+            });
+          });
+
+          // Tag the progress bar. It is the inner div with
+          // animation-name "progress-bar" — its direct parent is the
+          // container, and its child holds the label.
+          root.querySelectorAll('div').forEach((el) => {
+            if (el.classList.contains(progressClass)) return;
+            const styles = window.getComputedStyle(el);
+            if (styles.animationName === 'progress-bar') {
+              el.classList.add(progressClass);
+              if (el.parentElement && !el.parentElement.classList.contains(progressContainerClass)) {
+                el.parentElement.classList.add(progressContainerClass);
+              }
+              el.querySelectorAll('div').forEach((labelEl) => {
+                const lblStyles = window.getComputedStyle(labelEl);
+                if (lblStyles.position === 'absolute' && !labelEl.classList.contains(progressLabelClass)) {
+                  labelEl.classList.add(progressLabelClass);
+                }
+              });
+            }
+          });
+        }
+
+        function isFallbackImage(image) {
+          const src = image.getAttribute('src') || '';
+          const alt = image.getAttribute('alt') || '';
+          return src.includes('ox_inventory/web/images') || alt === 'Missing img' || alt === 'Missing image';
+        }
+
+        function createImageFallback(image) {
+          const fallback = document.createElement('span');
+          const rect = image.getBoundingClientRect();
+          const size = Math.max(25, Math.round(Math.max(rect.width, rect.height)) || 25);
+
+          fallback.className = fallbackClass;
+          fallback.setAttribute('aria-hidden', 'true');
+          fallback.style.width = `${size}px`;
+          fallback.style.height = `${size}px`;
+          fallback.style.flexBasis = `${size}px`;
+          fallback.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+              <path d="M21 8.5v7l-9 5-9-5v-7l9-5 9 5z"></path>
+              <path d="M3.5 8.5 12 13l8.5-4.5"></path>
+              <path d="M12 13v7.5"></path>
+            </svg>
+          `;
+
+          return fallback;
+        }
+
+        window.addEventListener('error', function(event) {
+          const target = event.target;
+          if (!target || target.tagName !== 'IMG' || !isFallbackImage(target)) return;
+
+          target.replaceWith(createImageFallback(target));
+        }, true);
+
+        window.addEventListener('DOMContentLoaded', function() {
+          markContextMenus();
+
+          const root = document.getElementById('root');
+          if (root) {
+            new MutationObserver(markContextMenus).observe(root, {
+              childList: true,
+              subtree: true,
+            });
+          }
+        });
+      })();
+
+      window.addEventListener('message', function(event) {
+        if (event.data.action === 'setCustomPosition') {
+          const styleEl = document.getElementById('custom-notify-style');
+          if (event.data.data.enabled) {
+            const x = event.data.data.x || 18;
+            const y = event.data.data.y || 78;
+            const width = event.data.data.width || 300;
+            
+            styleEl.textContent = `
+              #_rht_toaster {
+                position: fixed !important;
+                inset: auto !important;
+                left: ${x}% !important;
+                top: ${y}% !important;
+                right: auto !important;
+                bottom: auto !important;
+                pointer-events: none !important;
+                width: ${width}px !important;
+                max-width: ${width}px !important;
+              }
+              #_rht_toaster > div {
+                flex-direction: column-reverse !important;
+                width: ${width}px !important;
+                max-width: ${width}px !important;
+              }
+              #_rht_toaster > div > div {
+                width: ${width}px !important;
+                max-width: ${width}px !important;
+              }
+              #_rht_toaster .go4109123758 {
+                width: ${width}px !important;
+                max-width: ${width}px !important;
+              }
+            `;
+          } else {
+            styleEl.textContent = '';
+          }
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

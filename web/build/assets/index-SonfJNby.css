@@ -1,0 +1,91 @@
+@font-face{font-family:Roboto;src:url(../fonts/Roboto-Thin.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:100;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-ThinItalic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:100;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-ExtraLight.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:200;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-ExtraLightItalic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:200;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-Light.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:300;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-LightItalic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:300;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-Regular.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:400;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-Italic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:400;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-Medium.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:500;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-MediumItalic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:500;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-SemiBold.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:600;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-SemiBoldItalic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:600;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-Bold.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:700;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-BoldItalic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:700;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-ExtraBold.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:800;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-ExtraBoldItalic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:800;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-Black.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:900;font-stretch:normal}@font-face{font-family:Roboto;src:url(../fonts/Roboto-BlackItalic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:900;font-stretch:normal}@font-face{font-family:Roboto Mono;src:url(../fonts/RobotoMono-Thin.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:100;font-stretch:normal}@font-face{font-family:Roboto Mono;src:url(../fonts/RobotoMono-ThinItalic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:100;font-stretch:normal}@font-face{font-family:Roboto Mono;src:url(../fonts/RobotoMono-ExtraLight.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:200;font-stretch:normal}@font-face{font-family:Roboto Mono;src:url(../fonts/RobotoMono-ExtraLightItalic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:200;font-stretch:normal}@font-face{font-family:Roboto Mono;src:url(../fonts/RobotoMono-Light.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:300;font-stretch:normal}@font-face{font-family:Roboto Mono;src:url(../fonts/RobotoMono-LightItalic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:300;font-stretch:normal}@font-face{font-family:Roboto Mono;src:url(../fonts/RobotoMono-Regular.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:400;font-stretch:normal}@font-face{font-family:Roboto Mono;src:url(../fonts/RobotoMono-Italic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:400;font-stretch:normal}@font-face{font-family:Roboto Mono;src:url(../fonts/RobotoMono-Medium.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:500;font-stretch:normal}@font-face{font-family:Roboto Mono;src:url(../fonts/RobotoMono-MediumItalic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:500;font-stretch:normal}@font-face{font-family:Roboto Mono;src:url(../fonts/RobotoMono-SemiBold.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:600;font-stretch:normal}@font-face{font-family:Roboto Mono;src:url(../fonts/RobotoMono-SemiBoldItalic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:600;font-stretch:normal}@font-face{font-family:Roboto Mono;src:url(../fonts/RobotoMono-Bold.ttf) format("truetype");font-display:auto;font-style:normal;font-weight:700;font-stretch:normal}@font-face{font-family:Roboto Mono;src:url(../fonts/RobotoMono-BoldItalic.ttf) format("truetype");font-display:auto;font-style:italic;font-weight:700;font-stretch:normal}html{color-scheme:normal!important}body{background:none!important;margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;height:100vh;user-select:none;overflow:hidden!important}p{margin:0}#root{height:100%}code{font-family:source-code-pro,Menlo,Monaco,Consolas,Courier New,monospace}@keyframes progress-bar{0%{width:0%}to{width:100%}}::-webkit-scrollbar{background-color:transparent;padding:0;margin:0;width:0;height:0}.toast-inform{background-color:#2980b9}.toast-success{background-color:#27ae60}.toast-error{background-color:#c0392b}
+
+/* Custom notification position override */
+[class*='bottom-right'],[class*='bottomRight'],[class*='BottomRight']{left:18%!important;top:78%!important;right:auto!important;bottom:auto!important;transform:translate(-50%,-100%)!important;position:fixed!important;}
+
+/* Custom notification position for react-hot-toast */
+#_rht_toaster{inset:auto!important;left:18%!important;top:78%!important;transform:translate(-50%,-100%)!important;}
+
+:root{
+  --atlas-bg-primary:#0f0f0f;
+  --atlas-bg-secondary:#171717;
+  --atlas-bg-tertiary:#1e1e1e;
+  --atlas-bg-hover:#262626;
+  --atlas-bg-active:#2a2a2a;
+  --atlas-border:#2a2a2a;
+  --atlas-border-hover:#3a3a3a;
+  --atlas-text-primary:#f5f5f5;
+  --atlas-text-secondary:#a1a1a1;
+  --atlas-text-dim:#666;
+  --atlas-accent:#6366f1;
+  --atlas-accent-hover:#818cf8;
+  --atlas-danger:#ef4444;
+}
+
+body{
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif!important;
+}
+
+.mantine-Modal-modal,
+.mantine-Modal-content,
+.mantine-Popover-dropdown,
+.mantine-Tooltip-tooltip,
+.mantine-Tooltip-dropdown{
+  background:var(--atlas-bg-primary)!important;
+  border:1px solid var(--atlas-border)!important;
+  color:var(--atlas-text-primary)!important;
+  border-radius:12px!important;
+  box-shadow:0 25px 50px -12px rgba(0,0,0,.55)!important;
+}
+
+.mantine-Modal-header{
+  background:var(--atlas-bg-secondary)!important;
+  border-bottom:1px solid var(--atlas-border)!important;
+}
+
+.mantine-Button-root{
+  border-radius:8px!important;
+  font-weight:500!important;
+  transition:background-color 150ms ease,border-color 150ms ease,color 150ms ease,transform 150ms ease!important;
+}
+
+.mantine-Button-default{
+  background:var(--atlas-bg-tertiary)!important;
+  border:1px solid var(--atlas-border)!important;
+  color:var(--atlas-text-primary)!important;
+}
+
+.mantine-Button-default:hover{
+  background:var(--atlas-bg-hover)!important;
+  border-color:var(--atlas-border-hover)!important;
+}
+
+.mantine-Button-light,
+.mantine-Button-filled{
+  background:var(--atlas-accent)!important;
+  border-color:var(--atlas-accent)!important;
+  color:#fff!important;
+}
+
+.mantine-Button-light:hover,
+.mantine-Button-filled:hover{
+  background:var(--atlas-accent-hover)!important;
+  border-color:var(--atlas-accent-hover)!important;
+}
+
+.mantine-Input-input,
+.mantine-Textarea-input,
+.mantine-Select-input,
+.mantine-NumberInput-input{
+  background:var(--atlas-bg-tertiary)!important;
+  border:1px solid var(--atlas-border)!important;
+  border-radius:8px!important;
+  color:var(--atlas-text-primary)!important;
+}
+
+.mantine-Input-input:focus,
+.mantine-Textarea-input:focus,
+.mantine-Select-input:focus,
+.mantine-NumberInput-input:focus{
+  border-color:var(--atlas-accent)!important;
+}
