@@ -19,15 +19,33 @@
 
 ---@type OxCommandProperties[]
 local registeredCommands = {}
+---@type (string|nil)[]
+local commandAces = {}
 local shouldSendCommands = false
+
+local function getSuggestionsForPlayer(player)
+    local list = {}
+    for i = 1, #registeredCommands do
+        local ace = commandAces[i]
+        if not ace or IsPlayerAceAllowed(player, ace) then
+            list[#list + 1] = registeredCommands[i]
+        end
+    end
+    return list
+end
 
 SetTimeout(1000, function()
     shouldSendCommands = true
-    TriggerClientEvent('chat:addSuggestions', -1, registeredCommands)
+    local players = GetPlayers()
+    for i = 1, #players do
+        local id = tonumber(players[i])
+        TriggerClientEvent('chat:addSuggestions', id, getSuggestionsForPlayer(id))
+    end
 end)
 
 AddEventHandler('playerJoining', function()
-    TriggerClientEvent('chat:addSuggestions', source, registeredCommands)
+    local src = source
+    TriggerClientEvent('chat:addSuggestions', src, getSuggestionsForPlayer(src))
 end)
 
 ---@param source number
@@ -151,12 +169,26 @@ function lib.addCommand(commandName, properties, cb, ...)
             properties.name = ('/%s'):format(commandName)
             properties.restricted = nil
             registeredCommands[totalCommands] = properties
+            commandAces[totalCommands] = restricted and ('command.%s'):format(commandName) or nil
 
             if i ~= numCommands and numCommands ~= 1 then
                 properties = table.clone(properties)
             end
 
-            if shouldSendCommands then TriggerClientEvent('chat:addSuggestions', -1, properties) end
+            if shouldSendCommands then
+                if not restricted then
+                    TriggerClientEvent('chat:addSuggestions', -1, properties)
+                else
+                    local ace = ('command.%s'):format(commandName)
+                    local players = GetPlayers()
+                    for j = 1, #players do
+                        local id = tonumber(players[j])
+                        if IsPlayerAceAllowed(id, ace) then
+                            TriggerClientEvent('chat:addSuggestions', id, properties)
+                        end
+                    end
+                end
+            end
         end
     end
 end

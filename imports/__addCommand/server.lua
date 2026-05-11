@@ -10,13 +10,30 @@
 ]]
 
 local commands = {}
+local commandAces = {}
+
+local function getSuggestionsForPlayer(player)
+    local list = {}
+    for i = 1, #commands do
+        local ace = commandAces[i]
+        if not ace or IsPlayerAceAllowed(player, ace) then
+            list[#list + 1] = commands[i]
+        end
+    end
+    return list
+end
 
 SetTimeout(1000, function()
-    TriggerClientEvent('chat:addSuggestions', -1, commands)
+    local players = GetPlayers()
+    for i = 1, #players do
+        local id = tonumber(players[i])
+        TriggerClientEvent('chat:addSuggestions', id, getSuggestionsForPlayer(id))
+    end
 end)
 
 AddEventHandler('playerJoining', function()
-    TriggerClientEvent('chat:addSuggestions', source, commands)
+    local src = source
+    TriggerClientEvent('chat:addSuggestions', src, getSuggestionsForPlayer(src))
 end)
 
 local function chatSuggestion(name, parameters, help)
@@ -59,6 +76,7 @@ function lib.__addCommand(group, name, callback, parameters, help)
         end
     else
         chatSuggestion(name, parameters, help)
+        commandAces[#commands] = (group and group ~= 'builtin.everyone') and ('command.' .. name) or nil
 
         RegisterCommand(name, function(source, args, raw)
             source = tonumber(source) --[[@as number]]
