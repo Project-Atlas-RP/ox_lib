@@ -1,4 +1,5 @@
 export * from './resource';
+export * from './zones';
 
 export const context: 'server' | 'client' = IsDuplicityVersion() ? 'server' : 'client';
 
