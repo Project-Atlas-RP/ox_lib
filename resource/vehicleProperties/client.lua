@@ -93,6 +93,7 @@ if cache.game == 'redm' then return end
 ---@field tyres? table<number | string, 1 | 2>
 ---@field bulletProofTyres? boolean
 ---@field driftTyres? boolean
+---@field lockState? number
 
 ---@deprecated
 ---Not recommended. Entity owners can change rapidly and sporadically.
@@ -206,6 +207,7 @@ function lib.getVehicleProperties(vehicle)
     return {
         model = GetEntityModel(vehicle),
         plate = GetVehicleNumberPlateText(vehicle),
+        lockState = GetVehicleDoorLockStatus(vehicle),
         plateIndex = GetVehicleNumberPlateTextIndex(vehicle),
         bodyHealth = math.floor(GetVehicleBodyHealth(vehicle) + 0.5),
         engineHealth = math.floor(GetVehicleEngineHealth(vehicle) + 0.5),
@@ -324,6 +326,7 @@ function lib.setVehicleProperties(vehicle, props, fixVehicle)
     end
 
     if props.plate      then SetVehicleNumberPlateText(vehicle, props.plate) end
+    if props.lockState ~= nil then SetVehicleDoorsLocked(vehicle, props.lockState) end
     if props.plateIndex then SetVehicleNumberPlateTextIndex(vehicle, props.plateIndex) end
     if props.bodyHealth then SetVehicleBodyHealth(vehicle, props.bodyHealth + 0.0) end
     if props.engineHealth then SetVehicleEngineHealth(vehicle, props.engineHealth + 0.0) end
