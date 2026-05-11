@@ -21,8 +21,13 @@ end
 
 local settings = {
     default_locale = GetConvar('ox:locale', 'en'),
-    notification_position = safeGetKvp(GetResourceKvpString, 'notification_position', 'top-right'),
-    notification_audio = safeGetKvp(GetResourceKvpInt, 'notification_audio') == 1
+    -- Notification position options: 'top-right', 'top', 'top-left', 'center-right', 'center-left', 'bottom-right', 'bottom', 'bottom-left', 'custom'
+    notification_position = safeGetKvp(GetResourceKvpString, 'notification_position', 'custom'),
+    notification_audio = safeGetKvp(GetResourceKvpInt, 'notification_audio') == 1,
+    -- Custom position coordinates (only used when notification_position is 'custom')
+    notification_custom_x = 9.6, -- 0-100% from left edge
+    notification_custom_y = 74, -- 0-100% from top edge
+    notification_custom_width = 310, -- Width in pixels (default is ~300px)
 }
 
 local userLocales = GetConvarInt('ox:userLocales', 1) == 1
@@ -71,6 +76,7 @@ RegisterCommand('ox_lib', function()
                 { label = locale('ui.position.bottom-right'), value = 'bottom-right' },
                 { label = locale('ui.position.bottom'),       value = 'bottom' },
                 { label = locale('ui.position.bottom-left'),  value = 'bottom-left' },
+                { label = 'Custom (Above Minimap)',           value = 'custom' },
             },
             default = settings.notification_position,
             required = true,

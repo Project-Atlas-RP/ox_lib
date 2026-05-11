@@ -51,23 +51,17 @@ local function showRadial(id, option)
     currentRadial = radial
 
     -- Hide current menu and allow for transition
-    SendNUIMessage({
-        action = 'openRadialMenu',
-        data = false
-    })
+    TriggerEvent('atlasRadial:toNui', 'openRadialMenu', false)
 
     Wait(100)
 
     -- If menu was closed during transition, don't open the submenu
     if not isOpen then return end
 
-    SendNUIMessage({
-        action = 'openRadialMenu',
-        data = {
-            items = radial and radial.items or menuItems,
-            sub = radial and true or nil,
-            option = option
-        }
+    TriggerEvent('atlasRadial:toNui', 'openRadialMenu', {
+        items = radial and radial.items or menuItems,
+        sub = radial and true or nil,
+        option = option
     })
 end
 
@@ -128,12 +122,8 @@ end
 function lib.hideRadial()
     if not isOpen then return end
 
-    SendNUIMessage({
-        action = 'openRadialMenu',
-        data = false
-    })
-
-    lib.resetNuiFocus()
+    TriggerEvent('atlasRadial:toNui', 'openRadialMenu', false)
+    TriggerEvent('atlasRadial:focus', false)
     table.wipe(menuHistory)
 
     isOpen = false
@@ -203,9 +193,7 @@ function lib.clearRadialItems()
     end
 end
 
-RegisterNUICallback('radialClick', function(index, cb)
-    cb(1)
-
+AddEventHandler('atlasRadial:click', function(index)
     local itemIndex = index + 1
     local item, currentMenu
 
@@ -236,9 +224,7 @@ RegisterNUICallback('radialClick', function(index, cb)
     end
 end)
 
-RegisterNUICallback('radialBack', function(_, cb)
-    cb(1)
-
+AddEventHandler('atlasRadial:back', function()
     local numHistory = #menuHistory
     local lastMenu = numHistory > 0 and menuHistory[numHistory]
 
@@ -253,43 +239,26 @@ RegisterNUICallback('radialBack', function(_, cb)
     currentRadial = nil
 
     -- Hide current menu and allow for transition
-    SendNUIMessage({
-        action = 'openRadialMenu',
-        data = false
-    })
+    TriggerEvent('atlasRadial:toNui', 'openRadialMenu', false)
 
     Wait(100)
 
     -- If menu was closed during transition, don't open the submenu
     if not isOpen then return end
 
-    SendNUIMessage({
-        action = 'openRadialMenu',
-        data = {
-            items = menuItems,
-            option = lastMenu.option
-        }
+    TriggerEvent('atlasRadial:toNui', 'openRadialMenu', {
+        items = menuItems,
+        option = lastMenu.option
     })
 end)
 
-RegisterNUICallback('radialClose', function(_, cb)
-    cb(1)
-
+AddEventHandler('atlasRadial:close', function()
     if not isOpen then return end
 
-    lib.resetNuiFocus()
+    TriggerEvent('atlasRadial:focus', false)
 
     isOpen = false
     currentRadial = nil
-end)
-
-RegisterNUICallback('radialTransition', function(_, cb)
-    Wait(100)
-
-    -- If menu was closed during transition, don't open the submenu
-    if not isOpen then return cb(false) end
-
-    cb(true)
 end)
 
 local isDisabled = false
@@ -319,14 +288,11 @@ lib.addKeybind({
 
         isOpen = true
 
-        SendNUIMessage({
-            action = 'openRadialMenu',
-            data = {
-                items = menuItems
-            }
+        TriggerEvent('atlasRadial:toNui', 'openRadialMenu', {
+            items = menuItems
         })
 
-        lib.setNuiFocus(true)
+        TriggerEvent('atlasRadial:focus', true)
         SetCursorLocation(0.5, 0.5)
 
         while isOpen do

@@ -6,7 +6,7 @@
     Copyright © 2025 Linden <https://github.com/thelindat>
 ]]
 
----@alias NotificationPosition 'top' | 'top-right' | 'top-left' | 'bottom' | 'bottom-right' | 'bottom-left' | 'center-right' | 'center-left'
+---@alias NotificationPosition 'top' | 'top-right' | 'top-left' | 'bottom' | 'bottom-right' | 'bottom-left' | 'center-right' | 'center-left' | 'custom'
 ---@alias NotificationType 'info' | 'warning' | 'success' | 'error'
 ---@alias IconAnimationType 'spin' | 'spinPulse' | 'spinReverse' | 'pulse' | 'beat' | 'fade' | 'beatFade' | 'bounce' | 'shake'
 
@@ -27,6 +27,32 @@
 
 local settings = require 'resource.settings'
 
+local customPositionEnabled = false
+
+-- Toggle custom position in NUI with X/Y coordinates
+local function setCustomPositionCSS(enabled)
+    if customPositionEnabled == enabled then return end
+    customPositionEnabled = enabled
+    
+    SendNUIMessage({
+        action = 'setCustomPosition',
+        data = {
+            enabled = enabled,
+            x = settings.notification_custom_x or 18,
+            y = settings.notification_custom_y or 78,
+            width = settings.notification_custom_width or 300
+        }
+    })
+end
+
+-- Initialize on resource start
+CreateThread(function()
+    Wait(500)
+    if settings.notification_position == 'custom' then
+        setCustomPositionCSS(true)
+    end
+end)
+
 ---`client`
 ---@param data NotifyProps
 ---@diagnostic disable-next-line: duplicate-set-field
@@ -34,6 +60,22 @@ function lib.notify(data)
     local sound = settings.notification_audio and data.sound
     data.sound = nil
     data.position = data.position or settings.notification_position
+    -- Atlas: double the default ox_lib notification duration (3000ms -> 4500ms).
+    -- Callers that explicitly pass `duration` are unaffected.
+    if data.duration == nil then data.duration = 4500 end
+
+    -- If the user selected our custom minimap position, keep it enabled.
+    -- react-hot-toast uses the toast position to decide slide-in/out direction.
+    -- Using bottom-left here makes the toast slide/fade towards the left.
+    local useCustom = settings.notification_position == 'custom'
+        and (data.position == 'custom' or data.position == 'bottom-right')
+
+    if useCustom then
+        setCustomPositionCSS(true)
+        data.position = 'bottom-left'
+    else
+        setCustomPositionCSS(false)
+    end
 
     SendNUIMessage({
         action = 'notify',
