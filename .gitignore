@@ -11,3 +11,4 @@ pnpm-debug.log*
 
 /web/node_modules
 # /web/build  -- atlasrp fork ships the compiled bundle; rebuild via `bun run build` in web/
+/package/dist

@@ -108,7 +108,7 @@ RegisterNetEvent('ox_lib:setVehicleProperties', function(netid, data)
     end
 end)
 
-AddStateBagChangeHandler('ox_lib:setVehicleProperties', '', function(bagName, _, value)
+AddStateBagChangeHandler('ox_lib:setVehicleProperties', '', function(bagName, key, value)
     if not value or not GetEntityFromStateBagName then return end
 
     while NetworkIsInTutorialSession() do Wait(0) end
@@ -121,14 +121,20 @@ AddStateBagChangeHandler('ox_lib:setVehicleProperties', '', function(bagName, _,
 
     if not entityExists then return end
 
-    lib.setVehicleProperties(entity, value)
-    Wait(200)
+    local vehicle = lib.vehicle:new(entity)
 
-    -- this delay and second-setting of vehicle properties hopefully counters the
-    -- weird sync/ownership/shitfuckery when setting props on server-side vehicles
-    if NetworkGetEntityOwner(entity) == cache.playerId then
-        lib.setVehicleProperties(entity, value)
-        Entity(entity).state:set('ox_lib:setVehicleProperties', nil, true)
+    for i = 1, 10 do
+        local isEntityOwner = NetworkGetEntityOwner(entity) == cache.playerId
+
+        if isEntityOwner then
+            lib.setVehicleProperties(entity, value)
+
+            if not vehicle:setr(key, nil) then break end
+        end
+
+        Wait(400)
+
+        if not vehicle:has(key) then break end
     end
 end)
 
@@ -304,6 +310,8 @@ function lib.getVehicleProperties(vehicle)
     }
 end
 
+local setLockState = GetConvarBool('ox:setLockState', false)
+
 ---@param vehicle number
 ---@param props VehicleProperties
 ---@param fixVehicle? boolean Fix the vehicle after props have been set. Usually required when adding extras.
@@ -326,7 +334,7 @@ function lib.setVehicleProperties(vehicle, props, fixVehicle)
     end
 
     if props.plate      then SetVehicleNumberPlateText(vehicle, props.plate) end
-    if props.lockState ~= nil then SetVehicleDoorsLocked(vehicle, props.lockState) end
+    if props.lockState ~= nil and setLockState then SetVehicleDoorsLocked(vehicle, props.lockState) end
     if props.plateIndex then SetVehicleNumberPlateTextIndex(vehicle, props.plateIndex) end
     if props.bodyHealth then SetVehicleBodyHealth(vehicle, props.bodyHealth + 0.0) end
     if props.engineHealth then SetVehicleEngineHealth(vehicle, props.engineHealth + 0.0) end

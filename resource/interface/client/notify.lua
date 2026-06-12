@@ -58,28 +58,29 @@ end)
 ---@diagnostic disable-next-line: duplicate-set-field
 function lib.notify(data)
     local sound = settings.notification_audio and data.sound
-    data.sound = nil
-    data.position = data.position or settings.notification_position
+    local payload = table.clone(data)
+    payload.sound = nil
+    payload.position = payload.position or settings.notification_position
     -- Atlas: double the default ox_lib notification duration (3000ms -> 4500ms).
     -- Callers that explicitly pass `duration` are unaffected.
-    if data.duration == nil then data.duration = 4500 end
+    if payload.duration == nil then payload.duration = 4500 end
 
     -- If the user selected our custom minimap position, keep it enabled.
     -- react-hot-toast uses the toast position to decide slide-in/out direction.
     -- Using bottom-left here makes the toast slide/fade towards the left.
     local useCustom = settings.notification_position == 'custom'
-        and (data.position == 'custom' or data.position == 'bottom-right')
+        and (payload.position == 'custom' or payload.position == 'bottom-right')
 
     if useCustom then
         setCustomPositionCSS(true)
-        data.position = 'bottom-left'
+        payload.position = 'bottom-left'
     else
         setCustomPositionCSS(false)
     end
 
     SendNUIMessage({
         action = 'notify',
-        data = data
+        data = payload
     })
 
     if not sound then return end
